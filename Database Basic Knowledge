@@ -7,3 +7,33 @@
             e.g. 表中的CHECK、FOREIGN KEY 约束和DEFAULT、 NOT NULL定义都属于域完整性的范畴。
       
    表的组成部分：表头、行、列、值、键。   -------键的值在当前列中具有唯一性。
+
+
+数据类型：大致分为数值型、日期/时间型、字符/字符串型。
+    数值型：严格数值数据类型：Integer(Int), SmallInt, Decimal(Dec), Numeric.
+                      近似数据数值类型：Float, Real, Double Precision.
+                      * 数值类型范围 --> 0, 255/1Bit --> 0, 65 535/2Bit --> 0，16 777 215/3Bit --> 4Bit --> 8Bit
+                                                            TINYINT             SMALLINT                MEDIUMINT                    INT         BITINT
+                                                            
+                                                            4Bit  -->   8Bit                                            M+2       D+2
+                                                            Float        Double               DECIMAL    M>D      D>M
+                                                            
+     日期和时间类型：DATETIME、DATE、TIMESTAMP、TIME和YEAR
+                             BIT：       8                     3                  4                    3           1
+                             
+      字符串类型：CHAR、VARCHAR、BINARY、VARBINARY、BLOB、TEXT、ENUM和SET
+                     BIT： 0-255     0-65535
+                     CHAR 和 VARCHAR 类型类似，但它们保存和检索的方式不同。它们的最大长度和是否尾部空格被保留等方面也不同。在存储或检索过程中不进行大小写转换。
+       
+       P.S.: 1、一个汉字占多少长度与编码有关：
+                        UTF－8：一个汉字＝3个字节
+                        GBK：一个汉字＝2个字节
+                 2、varchar(n) 表示 n 个字符，无论汉字和英文，Mysql 都能存入 n 个字符，仅是实际字节长度有所区别
+                 3、MySQL 检查长度，可用 SQL 语言来查看：
+                        select LENGTH(fieldname) from tablename
+        
+COMMAND：
+    CREATE DB:  mysqladmin -u root -p create DB
+    DROP  DB   :  mysqladmin -u root -p drop DB
+    
+    CREATE TABLE table_name (column_name, column_type, not null, auto_increment) ENGINE=InnoDB DEFAULT CHARSET=utf8;
