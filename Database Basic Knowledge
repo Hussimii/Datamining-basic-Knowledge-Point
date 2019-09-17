@@ -31,9 +31,34 @@
                  2、varchar(n) 表示 n 个字符，无论汉字和英文，Mysql 都能存入 n 个字符，仅是实际字节长度有所区别
                  3、MySQL 检查长度，可用 SQL 语言来查看：
                         select LENGTH(fieldname) from tablename
+
+不等号：!=  equals to <>
         
 COMMAND：
     CREATE DB:  mysqladmin -u root -p create DB
     DROP  DB   :  mysqladmin -u root -p drop DB
     
     CREATE TABLE table_name (column_name, column_type, not null, auto_increment) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+    
+    LEFT JOIN 和 RIGHT JOIN 在使用时，要注意区分主表。避免查询不必要的数据。通常表行数较少的作为主表，防止查询出来过多的NULL值。
+    查询时 WHERE 后面增加 BINARY -> WHERE BINARY + conditions.  可以区分大小写。
+    e.g.: SELECT table_a.*, table_b.column FROM table_a LEFT JOIN table_b on table_a.id = table_b.siteid;
+    
+    UPDATE table SET field = value WHERE (condition); = UPDATE table SET field = REPLACE(field, old_value, new_value);
+    
+    DELETE FROM table where (clause);
+         1、delete 和 truncate 仅仅删除表数据，drop 连表数据和表结构一起删除，打个比方，delete 是单杀，truncate 是团灭，drop 是把电脑摔了。
+         2、delete 是 DML 语句，操作完以后如果没有不想提交事务还可以回滚，truncate 和 drop 是 DDL 语句，操作完马上生效，不能回滚。
+         3、执行的速度上，drop>truncate>delete，打个比方，drop 是神舟火箭，truncate 是和谐号动车，delete 是自行车。
+         
+     WHERE a LIKE "%b%".   % 类似于正则表达式中的 *。 %a: 以a结尾 a%: 以a开头. %a%: 含有a   '_a_' 3位中间为a 'a_' 两位开头为a， '_a'两位结尾为a。
+                符号： %  _   []   [^]  涉及到查询特殊符号时： 使用者[ % ]， 特殊符号放中间即可。
+                
+     ORDER BY ... DESC/ASC.
+        P.S. gbk编码：直接在后面添加 ORDER BY...
+                 utf-8: 需要添加CONVERT关键字: ORDER BY CONVERT(field using gbk);
+                 
+     GROUP BY 聚合函数， 按...进行分组。
+     
+     WITH ROLLUP 可以实现在分组统计数据基础上再进行相同的统计（SUM,AVG,COUNT…）
+        e.g.  SELECT name, SUM(singin) as singin_count FROM  employee_tbl GROUP BY name WITH ROLLUP;
