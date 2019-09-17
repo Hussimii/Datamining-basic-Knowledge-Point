@@ -62,3 +62,5 @@ COMMAND：
      
      WITH ROLLUP 可以实现在分组统计数据基础上再进行相同的统计（SUM,AVG,COUNT…）
         e.g.  SELECT name, SUM(singin) as singin_count FROM  employee_tbl GROUP BY name WITH ROLLUP;
+
+    使用coalesce 替代null值。 select coalesce(a,b,c);
