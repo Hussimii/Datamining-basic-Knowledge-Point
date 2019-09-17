@@ -7,7 +7,39 @@
             e.g. 表中的CHECK、FOREIGN KEY 约束和DEFAULT、 NOT NULL定义都属于域完整性的范畴。
       
    表的组成部分：表头、行、列、值、键。   -------键的值在当前列中具有唯一性。
+   
+    一般来说，事务是必须满足4个条件（ACID）：：原子性（Atomicity，或称不可分割性）、一致性（Consistency）、隔离性（Isolation，又称独立性）、持久性（Durability）。
+        原子性：一个事务（transaction）中的所有操作，要么全部完成，要么全部不完成，不会结束在中间某个环节。事务在执行过程中发生错误，会被回滚（Rollback）到事务开始前的状态，就像这个事务从来没有执行过一样。
+        一致性：在事务开始之前和事务结束以后，数据库的完整性没有被破坏。这表示写入的资料必须完全符合所有的预设规则，这包含资料的精确度、串联性以及后续数据库可以自发性地完成预定的工作。
+        隔离性：数据库允许多个并发事务同时对其数据进行读写和修改的能力，隔离性可以防止多个事务并发执行时由于交叉执行而导致数据的不一致。事务隔离分为不同级别，包括读未提交（Read uncommitted）、读提交（read committed）、可重复读（repeatable read）和串行化（Serializable）。
+        持久性：事务处理结束后，对数据的修改就是永久的，即便系统故障也不会丢失。
+        
+    事物控制语句： BEGIN = START TRANSACTION
+                                    COMMIT = COMMIT WORK
+                                    ROLLBACK
+                                    SAVEPOINT identifier
+                                    release SAVEPOINT identifier
+                                    ROLLBACK to identifier
+                                    SET TRANSACTION --> READ UNCOMMITTED, READ COMMITTED, REPEATEABLE READ, SERIALIZABLE.
+     
+     MYSQL 事务处理主要有两种方法：
+        1、用 BEGIN, ROLLBACK, COMMIT来实现
+            BEGIN 开始一个事务
+            ROLLBACK 事务回滚
+            COMMIT 事务确认
+        2、直接用 SET 来改变 MySQL 的自动提交模式:
+            SET AUTOCOMMIT=0 禁止自动提交
+            SET AUTOCOMMIT=1 开启自动提交
 
+索引使用的优劣时：
+    索引分单列索引和组合索引。单列索引，即一个索引只包含单个列，一个表可以有多个单列索引，但这不是组合索引。组合索引，即一个索引包含多个列。
+    创建索引时，你需要确保该索引是应用在 SQL 查询语句的条件(一般作为 WHERE 子句的条件)。
+    实际上，索引也是一张表，该表保存了主键与索引字段，并指向实体表的记录。
+        优势： 大大提高检索速度。
+        劣势：虽然索引大大提高了查询速度，同时却会降低更新表的速度，
+            如对表进行INSERT、UPDATE和DELETE。因为更新表时，MySQL不仅要保存数据，还要保存一下索引文件。
+
+建立索引会占用磁盘空间的索引文件。
 
 数据类型：大致分为数值型、日期/时间型、字符/字符串型。
     数值型：严格数值数据类型：Integer(Int), SmallInt, Decimal(Dec), Numeric.
@@ -64,3 +96,6 @@ COMMAND：
         e.g.  SELECT name, SUM(singin) as singin_count FROM  employee_tbl GROUP BY name WITH ROLLUP;
 
     使用coalesce 替代null值。 select coalesce(a,b,c);
+    
+    DROP: 修改表名--TO、添加/删除字段（任意位置）-DROP/ADD+AFTER/FIRST、修改字段类型/名称--MODIFY/CHANGE、
+                    修改默认值--ALTER...ALTER...SET/DROP DEFAULT、修改引擎 ALTER NAME...ENGINE = ...
